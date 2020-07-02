@@ -118,3 +118,62 @@
 <img src="images_day2/task1-images/step4b.png" alt="step4b"> 
 
 <h2>Here We Have Finished our Task 1 of Importing data from MySQL to HDFS using the entire table, specific columns, and also using the result of a query.</h2>
+
+
+  <h1> Task 2 : Exporting HDFS Data to an RDBMS</h1>
+  <h3>Objective : Objective: Export data from HDFS into a MySQL table using Sqoop.</h3>
+  <h3>Successful outcome: The data in salarydata.txt in HDFS will appear in a table in MySQL named salaries</h3>
+
+
+  <h3>Step 1 : </h3>
+  <h4>Pre-requites:</h4>	
+	
+	
+	1. Create Cluster in AWS which has already have Sqoop.
+	
+	2. create RDS Service in AWS which has access to SQl Workbentch
+	
+	3. insert data into local machine
+		Steps to setup lab in EMR :
+		
+		a. Download lab file in AWS EMR using below command 
+  			wget  https://dbda-labs.s3.amazonaws.com/labs.zip
+		b. Unzip the downloaded zip file
+  			unzip   labs.zip 
+			
+<img src="images_day2/task2-images/step%201.png" alt="step1"> 
+
+  <h3>Step 2 : </h3>
+
+	1. Create a new hdfs directory using mkdir command with name salarydata
+	2. Put salarydata.txt into the salarydata directory in HDFS
+	3. Check whether the file is created on hdfs
+<img src="images_day2/task2-images/step2.png" alt="step2"> 
+
+  <h3>Step 3 : </h3>
+	1. connect database test to RDS and run database
+	2. Create a new Table in the Database as salaries2 using following sql command
+		create table salaries2 ( gender varchar(1), age int, salary double, zipcode int);
+
+<img src="images_day2/task2-images/step3.png" alt="step3"> 
+
+  <h3>Step 4 : </h3>
+	
+	export database by using Sqoop in your hadoop cluster by following command:
+			sqoop export --connect jdbc:mysql://database-1.cqnwocbmnbi1.us-east-1.rds.amazonaws.com/test --username admin --password admin123  --tablesalaries2 --export-dir salarydata --input-fields-terminated-by ","
+			
+<img src="images_day2/task2-images/step4.png" alt="step4"> 
+<img src="images_day2/task2-images/step4a.png" alt="step4a"> 
+	
+	Note : You have to set RDS Endpoint ,username and password of database, table name of db
+
+step 5 :
+	Verify whether all records are been exported successfully
+
+	Go to mysql workbentch and run following qury:
+		select * from test.salaries2;
+<img src="images_day2/task2-images/step5.png" alt="step5"> 
+
+<h3> verified Successfully</h3>
+
+<h2> Result -> Here we have finished our Task 2 where we have used Sqoop to export data from HDFS into a database table in MySQL.</h2>
